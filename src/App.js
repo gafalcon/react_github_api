@@ -23,14 +23,19 @@ function App() {
 
   useEffect(() => {
     console.log("repo changed!");
-    fetchBranches(repo.owner, repo.name).then((res) => {
-      console.log({ branches: res });
-      setBranches(res);
-      setCurrentBranch(res[0]);
+    fetchBranches(repo.owner, repo.name).then((branches) => {
+      console.log({ branches: branches });
+      setBranches(branches);
+      setCurrentBranch(
+        branches.find(
+          (branch) => branch.name === "main" || branch.name === "master"
+        )
+      );
     });
   }, [repo]);
 
   useEffect(() => {
+    console.log("User changed! fetch user repos");
     fetchUserRepositories(repo.owner).then((repos) => {
       console.log({ repos });
       setRepos(repos);
@@ -40,14 +45,14 @@ function App() {
   useEffect(() => {
     console.log("branch changed!");
     console.log(currentBranch);
-    if (!currentBranch?.commit) return;
+    if (!currentBranch || !currentBranch.commit.url.includes(repo.name)) return;
     fetchBranchCommits(repo.owner, repo.name, currentBranch.commit.sha).then(
       (commits) => {
         console.log(commits);
         setCommits(commits);
       }
     );
-  }, [currentBranch]);
+  }, [currentBranch, repo]);
 
   return (
     <div className="App min-vh-100" style={{ backgroundColor: "#EEEEEE" }}>
