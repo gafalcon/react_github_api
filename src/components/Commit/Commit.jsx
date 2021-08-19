@@ -1,4 +1,7 @@
 import React from "react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 function Commit({ commit }) {
   return (
@@ -8,7 +11,7 @@ function Commit({ commit }) {
       </h4>
       <p>
         <a href={commit.author.html_url}>{commit.author.name}</a>
-        <span> commited {commit.author.date}</span>
+        <span> commited {dayjs().to(dayjs(commit.author.date))}</span>
       </p>
     </div>
   );
