@@ -1,10 +1,22 @@
 import React from "react";
 
-function BranchSelector() {
+import { FloatingLabel, Form } from "react-bootstrap";
+
+function BranchSelector({ branches, currentBranch, onBranchSelect }) {
   return (
-    <div>
-      <h1>Branch selector</h1>
-    </div>
+    <FloatingLabel controlId="floatingSelect" label="Branch">
+      <Form.Select
+        aria-label="Floating label select example"
+        onChange={(e) => onBranchSelect(e.target.value)}
+        value={currentBranch}
+      >
+        {branches.map((branch) => (
+          <option key={branch} value={branch}>
+            {branch}
+          </option>
+        ))}
+      </Form.Select>
+    </FloatingLabel>
   );
 }
 
