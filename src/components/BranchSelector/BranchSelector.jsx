@@ -11,8 +11,8 @@ function BranchSelector({ branches, currentBranch, onBranchSelect }) {
         value={currentBranch}
       >
         {branches.map((branch) => (
-          <option key={branch} value={branch}>
-            {branch}
+          <option key={branch.commit.sha} value={branch}>
+            {branch.name}
           </option>
         ))}
       </Form.Select>

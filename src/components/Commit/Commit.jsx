@@ -7,7 +7,7 @@ function Commit({ commit }) {
         <a href={commit.url}>{commit.message}</a>
       </h4>
       <p>
-        <a href="">{commit.author.name}</a>
+        <a href={commit.author.html_url}>{commit.author.name}</a>
         <span> commited {commit.author.date}</span>
       </p>
     </div>

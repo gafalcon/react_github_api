@@ -4,6 +4,7 @@ import RepoTitle from "./components/RepoTitle/RepoTitle";
 import RepoList from "./components/RepoList/RepoList";
 import BranchSelector from "./components/BranchSelector/BranchSelector";
 import CommitList from "./components/CommitList/CommitList";
+import { fetchBranches } from "./api";
 
 import { Container, Row, Col } from "react-bootstrap";
 function App() {
@@ -17,8 +18,11 @@ function App() {
   const [repos, setRepos] = useState([]);
 
   useEffect(() => {
-    setCurrentBranch("main");
-    setBranches(["main", "develop"]);
+    fetchBranches(repo.owner, repo.name).then((res) => {
+      console.log({ branches: res });
+      setBranches(res);
+      setCurrentBranch(res[0]);
+    });
     setCommits([
       {
         sha: "6dcb09b5b57875f334f61aebed695e2e4193db5e",
@@ -27,6 +31,7 @@ function App() {
           name: "gafalcon",
           date: "2011-04-14T16:00:49Z",
           avatar_url: "https://github.com/images/error/octocat_happy.gif",
+          html_url: "https://github.com/octocat",
         },
         message: "Fix all the bugs",
       },
@@ -38,6 +43,7 @@ function App() {
           name: "gafalcon",
           date: "2011-04-14T16:00:49Z",
           avatar_url: "https://github.com/images/error/octocat_happy.gif",
+          html_url: "https://github.com/octocat",
         },
         message: "Fix all the bugs 1",
       },
@@ -48,6 +54,7 @@ function App() {
           name: "gafalcon",
           date: "2011-04-14T16:00:49Z",
           avatar_url: "https://github.com/images/error/octocat_happy.gif",
+          html_url: "https://github.com/octocat",
         },
         message: "Fix all the bugs 2",
       },
@@ -58,6 +65,7 @@ function App() {
           name: "gafalcon",
           date: "2011-04-14T16:00:49Z",
           avatar_url: "https://github.com/images/error/octocat_happy.gif",
+          html_url: "https://github.com/octocat",
         },
         message: "Fix all the bugs 3",
       },
@@ -69,6 +77,10 @@ function App() {
       { name: "repo4" },
     ]);
   }, [repo]);
+
+  useEffect(() => {
+    console.log("branch changed!", currentBranch.name);
+  }, [currentBranch]);
 
   return (
     <div className="App min-vh-100" style={{ backgroundColor: "#EEEEEE" }}>
