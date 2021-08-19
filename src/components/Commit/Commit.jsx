@@ -1,9 +1,15 @@
 import React from "react";
 
-function Commit() {
+function Commit({ commit }) {
   return (
     <div>
-      <h1>Commit</h1>
+      <h4>
+        <a href={commit.url}>{commit.message}</a>
+      </h4>
+      <p>
+        <a href="">{commit.author.name}</a>
+        <span> commited {commit.author.date}</span>
+      </p>
     </div>
   );
 }
