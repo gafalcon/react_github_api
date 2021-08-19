@@ -4,7 +4,11 @@ import RepoTitle from "./components/RepoTitle/RepoTitle";
 import RepoList from "./components/RepoList/RepoList";
 import BranchSelector from "./components/BranchSelector/BranchSelector";
 import CommitList from "./components/CommitList/CommitList";
-import { fetchBranches, fetchBranchCommits } from "./api";
+import {
+  fetchBranches,
+  fetchBranchCommits,
+  fetchUserRepositories,
+} from "./api";
 
 import { Container, Row, Col } from "react-bootstrap";
 function App() {
@@ -24,17 +28,19 @@ function App() {
       setBranches(res);
       setCurrentBranch(res[0]);
     });
-    setRepos([
-      { name: "repo1" },
-      { name: "repo2" },
-      { name: "repo3" },
-      { name: "repo4" },
-    ]);
   }, [repo]);
 
   useEffect(() => {
-    if (!currentBranch) return;
-    console.log("branch changed!", currentBranch.name);
+    fetchUserRepositories(repo.owner).then((repos) => {
+      console.log({ repos });
+      setRepos(repos);
+    });
+  }, [repo.owner]);
+
+  useEffect(() => {
+    console.log("branch changed!");
+    console.log(currentBranch);
+    if (!currentBranch?.commit) return;
     fetchBranchCommits(repo.owner, repo.name, currentBranch.commit.sha).then(
       (commits) => {
         console.log(commits);
@@ -62,7 +68,7 @@ function App() {
           </Col>
         </Row>
         <Row>
-          <Col xs={10}>
+          <Col xs={8}>
             <CommitList commits={commits} />
           </Col>
           <Col>
