@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./components/Header/Header";
+import RepoTitle from "./components/RepoTitle/RepoTitle";
+import RepoList from "./components/RepoList/RepoList";
+import BranchSelector from "./components/BranchSelector/BranchSelector";
+import CommitList from "./components/CommitList/CommitList";
 
+import { Container, Row, Col } from "react-bootstrap";
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <Container>
+        <Row>
+          <Col>
+            <RepoTitle />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <BranchSelector />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <CommitList />
+          </Col>
+          <Col>
+            <RepoList />
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 }
