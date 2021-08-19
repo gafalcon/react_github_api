@@ -8,7 +8,7 @@ function BranchSelector({ branches, currentBranch, onBranchSelect }) {
       <Form.Select
         aria-label="Floating label select example"
         onChange={(e) => onBranchSelect(e.target.value)}
-        value={currentBranch}
+        value={currentBranch || ""}
       >
         {branches.map((branch) => (
           <option key={branch.commit.sha} value={branch}>

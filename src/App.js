@@ -4,7 +4,7 @@ import RepoTitle from "./components/RepoTitle/RepoTitle";
 import RepoList from "./components/RepoList/RepoList";
 import BranchSelector from "./components/BranchSelector/BranchSelector";
 import CommitList from "./components/CommitList/CommitList";
-import { fetchBranches } from "./api";
+import { fetchBranches, fetchBranchCommits } from "./api";
 
 import { Container, Row, Col } from "react-bootstrap";
 function App() {
@@ -12,64 +12,18 @@ function App() {
     owner: "gafalcon",
     name: "react_github_api",
   });
-  const [currentBranch, setCurrentBranch] = useState("main");
+  const [currentBranch, setCurrentBranch] = useState(null);
   const [branches, setBranches] = useState([]);
   const [commits, setCommits] = useState([]);
   const [repos, setRepos] = useState([]);
 
   useEffect(() => {
+    console.log("repo changed!");
     fetchBranches(repo.owner, repo.name).then((res) => {
       console.log({ branches: res });
       setBranches(res);
       setCurrentBranch(res[0]);
     });
-    setCommits([
-      {
-        sha: "6dcb09b5b57875f334f61aebed695e2e4193db5e",
-        url: "https://api.github.com/repos/octocat/Hello-World/commits/6dcb09b5b57875f334f61aebed695e2e4193db5e",
-        author: {
-          name: "gafalcon",
-          date: "2011-04-14T16:00:49Z",
-          avatar_url: "https://github.com/images/error/octocat_happy.gif",
-          html_url: "https://github.com/octocat",
-        },
-        message: "Fix all the bugs",
-      },
-
-      {
-        sha: "6dcb09b5b57875f334f61aebed695e2e4193db5f",
-        url: "https://api.github.com/repos/octocat/Hello-World/commits/6dcb09b5b57875f334f61aebed695e2e4193db5e",
-        author: {
-          name: "gafalcon",
-          date: "2011-04-14T16:00:49Z",
-          avatar_url: "https://github.com/images/error/octocat_happy.gif",
-          html_url: "https://github.com/octocat",
-        },
-        message: "Fix all the bugs 1",
-      },
-      {
-        sha: "6dcb09b5b57875f334f61aebed695e2e4193db5g",
-        url: "https://api.github.com/repos/octocat/Hello-World/commits/6dcb09b5b57875f334f61aebed695e2e4193db5e",
-        author: {
-          name: "gafalcon",
-          date: "2011-04-14T16:00:49Z",
-          avatar_url: "https://github.com/images/error/octocat_happy.gif",
-          html_url: "https://github.com/octocat",
-        },
-        message: "Fix all the bugs 2",
-      },
-      {
-        sha: "6dcb09b5b57875f334f61aebed695e2e4193db5h",
-        url: "https://api.github.com/repos/octocat/Hello-World/commits/6dcb09b5b57875f334f61aebed695e2e4193db5e",
-        author: {
-          name: "gafalcon",
-          date: "2011-04-14T16:00:49Z",
-          avatar_url: "https://github.com/images/error/octocat_happy.gif",
-          html_url: "https://github.com/octocat",
-        },
-        message: "Fix all the bugs 3",
-      },
-    ]);
     setRepos([
       { name: "repo1" },
       { name: "repo2" },
@@ -79,7 +33,14 @@ function App() {
   }, [repo]);
 
   useEffect(() => {
+    if (!currentBranch) return;
     console.log("branch changed!", currentBranch.name);
+    fetchBranchCommits(repo.owner, repo.name, currentBranch.commit.sha).then(
+      (commits) => {
+        console.log(commits);
+        setCommits(commits);
+      }
+    );
   }, [currentBranch]);
 
   return (
