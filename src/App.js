@@ -21,19 +21,22 @@ function App() {
   const [commits, setCommits] = useState([]);
   const [repos, setRepos] = useState([]);
 
+  //On repository change, fetch repo branches and set current branch
   useEffect(() => {
     console.log("repo changed!");
     fetchBranches(repo.owner, repo.name).then((branches) => {
       console.log({ branches: branches });
       setBranches(branches);
+      //Set initial branch as main or master if exists, else first listed branch
       setCurrentBranch(
         branches.find(
           (branch) => branch.name === "main" || branch.name === "master"
-        )
+        ) || branches[0]
       );
     });
   }, [repo]);
 
+  //If github user changes, fetch all user repositories
   useEffect(() => {
     console.log("User changed! fetch user repos");
     fetchUserRepositories(repo.owner).then((repos) => {
@@ -42,6 +45,7 @@ function App() {
     });
   }, [repo.owner]);
 
+  //When selected branch changes, fetch branch commits
   useEffect(() => {
     console.log("branch changed!");
     console.log(currentBranch);

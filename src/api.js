@@ -2,6 +2,7 @@ import axios from "axios";
 
 const apiUrl = "https://api.github.com";
 
+//Fetch all branches
 export const fetchBranches = async (owner, repository) => {
   try {
     const data = (
@@ -13,6 +14,7 @@ export const fetchBranches = async (owner, repository) => {
   }
 };
 
+//get all commits from a branch
 export const fetchBranchCommits = async (owner, repository, branchSha) => {
   try {
     const commits = (
@@ -20,6 +22,7 @@ export const fetchBranchCommits = async (owner, repository, branchSha) => {
         `${apiUrl}/repos/${owner}/${repository}/commits?sha=${branchSha}`
       )
     ).data;
+    //Select only necessary information for each commit
     return commits.map((commit) => ({
       sha: commit.sha,
       message: commit.commit.message,
@@ -39,6 +42,7 @@ export const fetchBranchCommits = async (owner, repository, branchSha) => {
 export const fetchUserRepositories = async (owner) => {
   const repos = (await axios.get(`${apiUrl}/users/${owner}/repos?sort=updated`))
     .data;
+  //Select only necessary info for each repository
   return repos.map(({ name, full_name, html_url, owner: { login } }) => ({
     name,
     full_name,

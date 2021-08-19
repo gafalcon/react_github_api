@@ -4,7 +4,7 @@ import { FloatingLabel, Form } from "react-bootstrap";
 
 function BranchSelector({ branches, currentBranch, onBranchSelect }) {
   const branchChange = (e) => {
-    onBranchSelect(branches[parseInt(e.target.value)]);
+    onBranchSelect(branches[parseInt(e.target.value)]); //update curent branch
   };
   return (
     <FloatingLabel controlId="floatingSelect" label="Branch">
