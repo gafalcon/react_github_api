@@ -11,6 +11,7 @@ export const fetchBranches = async (owner, repository) => {
     return data;
   } catch (err) {
     console.log(err);
+    return [];
   }
 };
 
@@ -36,17 +37,24 @@ export const fetchBranchCommits = async (owner, repository, branchSha) => {
     }));
   } catch (err) {
     console.log(err);
+    return [];
   }
 };
 
 export const fetchUserRepositories = async (owner) => {
-  const repos = (await axios.get(`${apiUrl}/users/${owner}/repos?sort=updated`))
-    .data;
-  //Select only necessary info for each repository
-  return repos.map(({ name, full_name, html_url, owner: { login } }) => ({
-    name,
-    full_name,
-    html_url,
-    owner: login,
-  }));
+  try {
+    const repos = (
+      await axios.get(`${apiUrl}/users/${owner}/repos?sort=updated`)
+    ).data;
+    //Select only necessary info for each repository
+    return repos.map(({ name, full_name, html_url, owner: { login } }) => ({
+      name,
+      full_name,
+      html_url,
+      owner: login,
+    }));
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
 };
